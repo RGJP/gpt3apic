@@ -1,2 +1,0 @@
-# CGPT
-ChatGPT API calls
