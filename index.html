@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>ChatGPT</title>
+	<title>GPT-3 API Call</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="initial-scale=1.0">
 </head>
+
+<style>
+body {
+    background-color: #343541; 
+}
+</style>
+
 <body>
 <center>
-	<h1>ChatGPT</h1>
-	<label for="apiKey">API Key:</label>
+	<h1 style="color:white;font-family:arial">GPT-3 API Call</h1>
+	<label style="color:white;font-family:arial" for="apiKey">API KEY</label>
 	<br>
-	<input type="password" id="apiKey" name="apiKey" size="60">
+	<input style="color:white;background-color:#2d2e39;border:1px solid white;font-family:arial" type="password" id="apiKey" name="apiKey" size="60">
 	<br><br>
-	<label for="promptText">Prompt:</label>
+	<label style="color:white;font-family:arial" for="promptText">PROMPT</label>
 	<br>
-	<textarea id="promptText" name="promptText" rows="4" cols="100"></textarea>
+	<textarea style="color:white;background-color:#2d2e39;border:1px solid white;font-family:arial;font-size:95%" id="promptText" name="promptText" rows="8" cols="54"></textarea>
 	<br><br>
-	<label style="text-decoration:underline" onclick="alert('Temperature controls the level of randomness or creativity in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. For example, a high temperature value can be used to generate text that is more different from the prompt, while a low temperature value can be used to generate text that is more similar to the prompt. This can be useful in situations where the goal is to generate text that is similar to a given input, but with some level of variation or creativity. Temperature can also be used to control the level of coherence and fluency in the generated text.')">Temperature (between 0-1, click for details):</label>
+	<label style="color:white;font-family:arial" onclick="alert('Temperature controls the level of randomness or creativity in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. For example, a high temperature value can be used to generate text that is more different from the prompt, while a low temperature value can be used to generate text that is more similar to the prompt. This can be useful in situations where the goal is to generate text that is similar to a given input, but with some level of variation or creativity. Temperature can also be used to control the level of coherence and fluency in the generated text.')">TEMPERATURE (between 0 and 1, click here for details)</label>
 	<br><br>
-	<input style="text-align:center" type="text" id="temperatureText" name="temperatureText" size="3" value="0.9">
+	<input style="color:white;background-color:#2d2e39;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="temperatureText" name="temperatureText" size="4" value="0.9">
 	<br><br>
-	<button style="height:30px;width:190px" onclick="generateResponse()">Send</button>
+	<button style="color:white;background-color:#2d2e39;border:1px solid white;font-family:arial;font-size:120%;text-align:center;height:40px;width:180px" onclick="generateResponse()">SEND CALL</button>
 	<br><br>
-	<label id="StatusLabel"></label>
+	<label style="color:white;font-family:arial" id="StatusLabel"></label>
 	<br>
-	<textarea id="responseText" name="responseText" readonly rows="30" cols="150"></textarea>
-	
+	<textarea style="color:white;background-color:#2d2e39;border:1px solid white;font-family:arial" id="responseText" name="responseText" readonly rows="24" cols="120"></textarea>
+	<br><br>
+	<button style="color:white;background-color:#2d2e39;border:1px solid white;font-family:arial;font-size:120%;text-align:center;height:40px;width:180px" onclick="copyToClip()">COPY</button>
 	<script>
 		function generateResponse() {
 			document.getElementById("responseText").value = "";
@@ -37,7 +45,7 @@
 			var temperatureText = document.getElementById("temperatureText").value;
 			var FloatTemperature = parseFloat(temperatureText)
 			
-			document.getElementById('StatusLabel').innerHTML = 'Status: Generation in progress with '+FloatTemperature+' temperature...';
+			document.getElementById('StatusLabel').innerHTML = 'Generation in progress with '+FloatTemperature+' temperature...';
 			
 					$.ajax({ 
 			url: 'https://api.openai.com/v1/completions',
@@ -57,7 +65,7 @@
 				document.getElementById("responseText").value = generatedText;
 				let endTime = new Date();
 				let timeElapsed = endTime - startTime;
-				document.getElementById('StatusLabel').innerHTML = 'Status: Generation completed in '+timeElapsed+' ms.';
+				document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' ms.';
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				alert('Error! Server too busy or wrong values provided.');
@@ -67,6 +75,15 @@
 		apiKey = null;
 		
 	}
+	
+		function copyToClip() {
+		var copyText = document.getElementById("responseText");
+		copyText.select();
+		copyText.setSelectionRange(0, 999999); // For mobile devices
+		navigator.clipboard.writeText(copyText.value);
+		var promptTextFocus = document.getElementById("promptText");
+		promptTextFocus.focus();
+		}
 </script>
 
 </center>
