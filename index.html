@@ -26,7 +26,7 @@
 		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:95%" id="promptText" name="promptText" rows="8" cols="54"></textarea>
 		<br><br>
 		<!-- TEMPERATURE -->
-		<label style="color:white;font-family:arial" onclick="alert('Temperature controls the level of randomness or creativity in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. For example, a high temperature value can be used to generate text that is more different from the prompt, while a low temperature value can be used to generate text that is more similar to the prompt. This can be useful in situations where the goal is to generate text that is similar to a given input, but with some level of variation or creativity. Temperature can also be used to control the level of coherence and fluency in the generated text.')">TEMPERATURE (between 0 and 1, click here for details)</label>
+		<label style="color:white;font-family:arial" onclick="alert('Temperature controls the level of randomness or creativity in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. For example, a high temperature value can be used to generate text that is more different from the prompt, while a low temperature value can be used to generate text that is more similar to the prompt. This can be useful in situations where the goal is to generate text that is similar to a given input, but with some level of variation or creativity. Temperature can also be used to control the level of coherence and fluency in the generated text.')">TEMPERATURE (between 0 and 2, click here for details)</label>
 		<br><br>
 		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="temperatureText" name="temperatureText" size="4" value="0.9">
 		<br><br>
@@ -89,8 +89,8 @@
 						let timeElapsed = endTime - startTime;
 						document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' ms.';
 					},
-					error: function (jqXHR, textStatus, errorThrown) {
-						alert('Error! Server too busy or wrong values provided.'+jqXHR+textStatus+errorThrown);
+					error: function (err) {
+						alert('Error! Response:\n'+err.responseText);
 						document.getElementById('StatusLabel').innerHTML = ' ';
 					}
 				});
