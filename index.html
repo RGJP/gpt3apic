@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GPT-3 API Call</title>
+	<!-- Version 202302271549 -->
+	<title>OpenAI API Call (GPT-3)</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="initial-scale=1.0">
@@ -63,6 +64,23 @@ body {
 			success: function (response) {
 				var generatedText = response.choices[0].text;
 				document.getElementById("responseText").value = generatedText;
+				
+				// Remove the 2 first blank lines (\n\n) in the text response
+				var text = document.getElementById("responseText").value;
+
+				// Split the text into an array of lines
+				var lines = text.split("\n");
+
+				// Remove the first two lines
+				lines.shift();
+				lines.shift();
+
+				// Rejoin the text array into a string
+				var newText = lines.join("\n");
+
+				// Update the textarea value with the new string
+				document.getElementById("responseText").value = newText;
+				
 				let endTime = new Date();
 				let timeElapsed = endTime - startTime;
 				document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' ms.';
