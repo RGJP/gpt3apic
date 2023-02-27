@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ChatGPT</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0">
+</head>
+<body>
+<center>
+	<h1>ChatGPT</h1>
+	<label for="apiKey">API Key:</label>
+	<br>
+	<input type="password" id="apiKey" name="apiKey" size="60">
+	<br><br>
+	<label for="promptText">Prompt:</label>
+	<br>
+	<textarea id="promptText" name="promptText" rows="4" cols="100"></textarea>
+	<br><br>
+	<label style="text-decoration:underline" onclick="alert('Temperature controls the level of randomness or creativity in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. For example, a high temperature value can be used to generate text that is more different from the prompt, while a low temperature value can be used to generate text that is more similar to the prompt. This can be useful in situations where the goal is to generate text that is similar to a given input, but with some level of variation or creativity. Temperature can also be used to control the level of coherence and fluency in the generated text.')">Temperature (between 0-1, click for details):</label>
+	<br><br>
+	<input style="text-align:center" type="text" id="temperatureText" name="temperatureText" size="3" value="0.9">
+	<br><br>
+	<button style="height:30px;width:190px" onclick="generateResponse()">Send</button>
+	<br><br>
+	<label id="StatusLabel"></label>
+	<br>
+	<textarea id="responseText" name="responseText" readonly rows="30" cols="150"></textarea>
+	
+	<script>
+		function generateResponse() {
+			document.getElementById("responseText").value = "";
+			
+			let startTime = new Date();
+			var apiKey = document.getElementById("apiKey").value;
+			var promptText = document.getElementById("promptText").value;
+			var temperatureText = document.getElementById("temperatureText").value;
+			var FloatTemperature = parseFloat(temperatureText)
+			
+			document.getElementById('StatusLabel').innerHTML = 'Status: Generation in progress with '+FloatTemperature+' temperature...';
+			
+					$.ajax({ 
+			url: 'https://api.openai.com/v1/completions',
+			type: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + apiKey
+			},
+			data: JSON.stringify({
+				"model": "text-davinci-003",
+				"prompt": promptText,
+				"max_tokens": 4000,
+				"temperature": FloatTemperature
+			}),
+			success: function (response) {
+				var generatedText = response.choices[0].text;
+				document.getElementById("responseText").value = generatedText;
+				let endTime = new Date();
+				let timeElapsed = endTime - startTime;
+				document.getElementById('StatusLabel').innerHTML = 'Status: Generation completed in '+timeElapsed+' ms.';
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert('Error! Server too busy or wrong values provided.');
+				document.getElementById('StatusLabel').innerHTML = ' ';
+			}
+		});
+		apiKey = null;
+		
+	}
+</script>
+
+</center>
+</body>
+</html>
