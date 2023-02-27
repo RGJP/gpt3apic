@@ -1,0 +1,2 @@
+# CGPT
+ChatGPT API calls
