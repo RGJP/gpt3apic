@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>OpenAI API Call (GPT-3)</title>
+	<title>OpenAI API Call</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 </style>
 <body onload="setStyling()">
 	<center>
-		<h1 style="color:white;font-family:arial">OpenAI API Call (GPT-3)</h1>
+		<h1 style="color:white;font-family:arial" onclick="alert('Uses text-davinci-003 model (GPT-3)')">OpenAI API Call</h1> 
 		<!-- API KEY -->
 		<label style="color:white;font-family:arial" for="apiKey">API KEY</label>
 		<br>
@@ -25,12 +25,12 @@
 		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:95%" id="promptText" name="promptText" rows="6" cols="100"></textarea>
 		<br><br>
 		<!-- TEMPERATURE -->
-		<label style="color:white;font-family:arial" onclick="alert('What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, diverse, creative while lower values like 0.2 will make it more focused, predictable and deterministic.')">TEMPERATURE&nbsp;</label>
-		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="temperatureText" name="temperatureText" size="4" value="0.8">
+		<label style="color:white;font-family:arial" onclick="alert('Sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, diverse and creative while lower values like 0.2 will make it more focused, predictable and deterministic.')">TEMPERATURE&nbsp;</label>
+		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="temperatureText" name="temperatureText" size="4" value="0.5">
 		<br><br>
 		<!-- MAX_TOKENS -->
-		<label style="color:white;font-family:arial" onclick="alert('The maximum number of tokens to generate in the completion. The token count of your prompt plus MAX TOKENS cannot exceed 4097 (text-davinci-003 is used here). Reduce MAX TOKENS value when writing a long prompt to balance the request.')">MAX TOKENS&nbsp;&nbsp;&nbsp;&nbsp;</label>
-		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="maxTokens" name="maxTokens" size="4" value="4000">
+		<label style="color:white;font-family:arial" onclick="alert('Maximum number of tokens to generate in the completion. The token count of your prompt plus MAX TOKENS cannot exceed 4097 (text-davinci-003). Reduce your MAX TOKENS value when writing a long prompt to balance the request and prevent exceeding the maximum count.')">MAX TOKENS&nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="maxTokens" name="maxTokens" size="4" value="3500">
 		<br><br>
 		<!-- SEND CALL BUTTON -->
 		<button style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:120%;text-align:center;height:40px;width:180px" onclick="generateResponse()">SEND CALL</button>
@@ -39,7 +39,7 @@
 		<label style="color:white;font-family:arial" id="StatusLabel"></label>
 		<br>
 		<!-- RESPONSETEXT AREA -->
-		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial" id="responseText" name="responseText" rows="26" cols="114"></textarea>
+		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial" id="responseText" name="responseText" rows="25" cols="114"></textarea>
 		<br><br>
 		<!-- COPY BUTTON -->
 		<button style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:120%;text-align:center;height:40px;width:180px" onclick="copyToClip()">COPY</button>
@@ -84,7 +84,7 @@
 					success: function (response) {
 						var generatedText = response.choices[0].text;
 						document.getElementById("responseText").value = generatedText;
-						
+						console.log(response)
 						/*
 						// Following manipulation is for removing the 2 first lines (\n\n) in the text response (blank lines)
 						var text = document.getElementById("responseText").value;
@@ -125,7 +125,7 @@
 				promptTextFocus.focus();
 				}
 		</script>
-		<p style="color:black;font-family:arial">version 1.3</p>
+		<p style="color:black;font-family:arial">version 1.4</p>
 	</center>
 </body>
 </html>
