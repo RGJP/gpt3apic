@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- Version 202302271558 -->
+	
 	<title>OpenAI API Call (GPT-3)</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<meta charset="utf-8">
-	<meta name="viewport" content="initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <style>
 	body {
 		background-color: #343541; 
 	}
 </style>
-<body>
+<body onload="setStyling()">
 	<center>
 		<h1 style="color:white;font-family:arial">OpenAI API Call (GPT-3)</h1>
 		<!-- API KEY -->
 		<label style="color:white;font-family:arial" for="apiKey">API KEY</label>
 		<br>
-		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial" type="password" id="apiKey" name="apiKey" size="60">
+		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial" type="password" autofocus id="apiKey" name="apiKey" size=56>
 		<br><br>
 		<!-- PROMPT -->
 		<label style="color:white;font-family:arial" for="promptText">PROMPT</label>
 		<br>
-		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:95%" id="promptText" name="promptText" rows="8" cols="54"></textarea>
+		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:95%" id="promptText" name="promptText" rows="6" cols="100"></textarea>
 		<br><br>
 		<!-- TEMPERATURE -->
-		<label style="color:white;font-family:arial" onclick="alert('Temperature controls the level of randomness or creativity in the generated text. Higher temperatures result in more diverse and unpredictable output. Conversely, lower temperatures result in more conservative and predictable output. For example, a high temperature value can be used to generate text that is more different from the prompt, while a low temperature value can be used to generate text that is more similar to the prompt. This can be useful in situations where the goal is to generate text that is similar to a given input, but with some level of variation or creativity. Temperature can also be used to control the level of coherence and fluency in the generated text.')">TEMPERATURE (between 0 and 2, click here for details)</label>
+		<label style="color:white;font-family:arial" onclick="alert('What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, diverse, creative while lower values like 0.2 will make it more focused, predictable and deterministic.')">TEMPERATURE&nbsp;</label>
+		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="temperatureText" name="temperatureText" size="4" value="0.8">
 		<br><br>
-		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="temperatureText" name="temperatureText" size="4" value="0.9">
+		<!-- MAX_TOKENS -->
+		<label style="color:white;font-family:arial" onclick="alert('The maximum number of tokens to generate in the completion. The token count of your prompt plus MAX TOKENS cannot exceed 4097 (text-davinci-003 is used here). Reduce MAX TOKENS value when writing a long prompt to balance the request.')">MAX TOKENS&nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<input style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;text-align:center;font-size:105%" type="text" id="maxTokens" name="maxTokens" size="4" value="4000">
 		<br><br>
 		<!-- SEND CALL BUTTON -->
 		<button style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:120%;text-align:center;height:40px;width:180px" onclick="generateResponse()">SEND CALL</button>
@@ -37,12 +40,22 @@
 		<label style="color:white;font-family:arial" id="StatusLabel"></label>
 		<br>
 		<!-- RESPONSETEXT AREA -->
-		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial" id="responseText" name="responseText" readonly rows="24" cols="120"></textarea>
+		<textarea style="color:white;background-color:#22222b;border:1px solid white;font-family:arial" id="responseText" name="responseText" rows="26" cols="114"></textarea>
 		<br><br>
 		<!-- COPY BUTTON -->
 		<button style="color:white;background-color:#22222b;border:1px solid white;font-family:arial;font-size:120%;text-align:center;height:40px;width:180px" onclick="copyToClip()">COPY</button>
 			<!-- JAVASCRIPT -->
 			<script>
+				function setStyling() {
+				// Check for mobile browser
+				var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+					if(isMobile) {
+					document.getElementById("apiKey").size=45;
+					document.getElementById("promptText").cols=45
+					document.getElementById("responseText").cols=50
+					}
+				}
+
 				function generateResponse() {
 					document.getElementById("responseText").value = "";
 					let startTime = new Date();
@@ -50,6 +63,8 @@
 					var promptText = document.getElementById("promptText").value;
 					var temperatureText = document.getElementById("temperatureText").value;
 					var FloatTemperature = parseFloat(temperatureText)
+					var maxTokens = document.getElementById("maxTokens").value;
+					var IntmaxTokens = parseInt(maxTokens)
 					document.getElementById('StatusLabel').innerHTML = 'Generation in progress with '+FloatTemperature+' temperature...';
 					
 							$.ajax({ 
@@ -62,13 +77,16 @@
 					data: JSON.stringify({
 						"model": "text-davinci-003",
 						"prompt": promptText,
-						"max_tokens": 4000,
-						"temperature": FloatTemperature
+						"max_tokens": IntmaxTokens,
+						"temperature": FloatTemperature,
+						"frequency_penalty":0.0,
+						"presence_penalty":0.0
 					}),
 					success: function (response) {
 						var generatedText = response.choices[0].text;
 						document.getElementById("responseText").value = generatedText;
 						
+						/*
 						// Following manipulation is for removing the 2 first lines (\n\n) in the text response (blank lines)
 						var text = document.getElementById("responseText").value;
 
@@ -84,10 +102,11 @@
 
 						// Update the textarea value with the new string
 						document.getElementById("responseText").value = newText;
+						*/
 						
 						let endTime = new Date();
-						let timeElapsed = endTime - startTime;
-						document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' ms.';
+						let timeElapsed = (endTime - startTime)/1000;
+						document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' seconds.';
 					},
 					error: function (err) {
 						alert('Error! Response:\n'+err.responseText);
@@ -106,6 +125,7 @@
 				promptTextFocus.focus();
 				}
 		</script>
+		<p style="color:black;font-family:arial">version 0228</p>
 	</center>
 </body>
 </html>
