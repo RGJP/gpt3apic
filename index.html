@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
 	<title>OpenAI API Call (GPT-3)</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<meta charset="utf-8">
@@ -47,7 +46,7 @@
 			<!-- JAVASCRIPT -->
 			<script>
 				function setStyling() {
-				// Check for mobile browser
+				// Check for mobile browser and adjust boxes size to fit better on screen
 				var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 					if(isMobile) {
 					document.getElementById("apiKey").size=45;
@@ -109,7 +108,8 @@
 						document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' seconds.';
 					},
 					error: function (err) {
-						alert('Error! Response:\n'+err.responseText);
+						let messageContent = JSON.parse(err.responseText).error.message;
+						alert('ERROR\n\n'+messageContent);
 						document.getElementById('StatusLabel').innerHTML = ' ';
 					}
 				});
@@ -125,7 +125,7 @@
 				promptTextFocus.focus();
 				}
 		</script>
-		<p style="color:black;font-family:arial">version 1.2</p>
+		<p style="color:black;font-family:arial">version 1.3</p>
 	</center>
 </body>
 </html>
