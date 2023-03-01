@@ -13,7 +13,9 @@
 </style>
 <body onload="setStyling()">
 	<center>
-		<h1 style="color:white;font-family:arial" onclick="alert('Uses text-davinci-003 model (GPT-3)')">OpenAI API Call (Image)</h1> 
+		<h1 style="color:white;font-family:arial" onclick="alert('Uses text-davinci-003 model (GPT-3)')">OpenAI API Call (Image)</h1>
+		<a href="https://rgjp.github.io/gpt3apic/index.html" target="_blank" style="color:white;font-family:arial;text-decoration:none">*For text completion click here</a>
+		<br><br>
 		<!-- API KEY -->
 		<label style="color:white;font-family:arial" for="apiKey">API KEY</label>
 		<br>
@@ -47,7 +49,8 @@
 				var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 					if(isMobile) {
 					document.getElementById("apiKey").size=45;
-					document.getElementById("promptText").cols=43
+					document.getElementById("promptText").cols=43;
+					document.getElementById("imageThumbBox").style.width="350px";
 					}
 				}
 
@@ -569,25 +572,7 @@
 							console.log('The intnumberOfImages value is not between 1 and 10');
 							break;
 						}
-						
-						/*
-						// Following manipulation is for removing the 2 first lines (\n\n) in the text response (blank lines)
-						var text = document.getElementById("responseText").value;
-
-						// Split the text into an array of lines
-						var lines = text.split("\n");
-
-						// Remove the first two lines
-						lines.shift();
-						lines.shift();
-
-						// Rejoin the text array into a string
-						var newText = lines.join("\n");
-
-						// Update the textarea value with the new string
-						document.getElementById("responseText").value = newText;
-						*/
-						
+												
 						let endTime = new Date();
 						let timeElapsed = (endTime - startTime)/1000;
 						document.getElementById('StatusLabel').innerHTML = 'Generation completed in '+timeElapsed+' seconds.';
